@@ -1,0 +1,8 @@
+# Exclude var directory content
+var/*
+
+# Keep .gitkeep
+!.gitkeep
+
+# Keep Initial_DB_Script.sql
+!var/data/sql/Initial_DB_Script.sql

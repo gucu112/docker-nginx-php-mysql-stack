@@ -1,0 +1,89 @@
+version: '3.7'
+
+services:
+
+  nginx-server:
+    build:
+      context: ./docker/nginx
+    image: nginx-server:latest
+    container_name: nginx-server
+    restart: always
+    depends_on:
+      - php-fpm
+    networks:
+      - internal-net
+    ports:
+      - '8080:8080'
+    volumes:
+      - source-volume:/var/www/html/default:cached
+      - php-run-volume:/var/run/php:delegated
+      - $PWD/var/log/nginx:/var/log/nginx:delegated
+
+  php-fpm:
+    build:
+      context: ./docker/php
+    image: php-fpm:latest
+    container_name: php-fpm
+    restart: always
+    depends_on:
+      - mysql-server
+    networks:
+      - database-net
+      - internal-net
+    volumes:
+      - source-volume:/var/www/html/default:cached
+      - php-run-volume:/var/run/php:delegated
+      - $PWD/var/log/php:/var/log/php:delegated
+
+  mysql-server:
+    build:
+      context: ./docker/mysql
+    image: mysql-server:latest
+    container_name: mysql-server
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=default
+      - MYSQL_LOG_CONSOLE=
+    networks:
+      - database-net
+    expose:
+      - '3306'
+    volumes:
+      - mysql-data-volume:/var/lib/mysql:cached
+      - $PWD/var/log/mysql:/var/log/mysql:delegated
+
+volumes:
+
+  source-volume:
+    driver: local
+    name: source-volume
+    driver_opts:
+      type: none
+      o: bind,X-mount.mkdir
+      device: $PWD
+
+  php-run-volume:
+    driver: local
+    name: php-run-volume
+    driver_opts:
+      type: none
+      o: bind,X-mount.mkdir
+      device: $PWD/var/run/php
+
+  mysql-data-volume:
+    driver: local
+    name: mysql-data-volume
+    driver_opts:
+      type: none
+      o: bind,X-mount.mkdir
+      device: $PWD/var/data/mysql
+
+networks:
+
+  database-net:
+    driver: bridge
+    name: database-net
+
+  internal-net:
+    driver: bridge
+    name: internal-net
