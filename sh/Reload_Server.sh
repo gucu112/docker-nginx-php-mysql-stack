@@ -1,3 +1,8 @@
 #!/bin/bash
-# Reload nginx inside nginx-server container
-sudo -E docker exec -it nginx-server nginx -s reload
+
+# Import shared code
+. "$(dirname "$0")/Common_Code.sh"
+
+# Reload nginx inside container
+echo 'Reloading nginx server...'
+sudo -E $(docker) exec -it $NGINX_SERVER_CONTAINER_NAME nginx -s reload

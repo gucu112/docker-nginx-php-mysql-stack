@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Update software repositories
 apt-get update
 # Uninstall old versions of Docker

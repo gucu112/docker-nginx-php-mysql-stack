@@ -1,3 +1,9 @@
 #!/bin/bash
-# Call mysql from inside mysql-server container as dev user
-sudo -E docker exec -it mysql-server mysql -u dev -p
+
+# Import shared code
+. "$(dirname "$0")/Common_Code.sh"
+
+# Call mysql from inside container as dev user
+echo 'Opening mysql inside container...'
+# TODO: Get rid of user and password in command
+sudo -E $(docker) exec -it $MYSQL_DATABASE_CONTAINER_NAME mysql -u dev -p

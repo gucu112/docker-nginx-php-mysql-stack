@@ -15,8 +15,7 @@ RUN chown -R php-data:php-data /run
 RUN ln -s /run /var/run
 
 # Create PID file
-RUN mkdir /var/run/nginx
-RUN touch /var/run/nginx/nginx.pid
+RUN touch /var/run/nginx.pid
 
 # Remove default configuration
 RUN rm -f /etc/nginx/conf.d/default.conf
@@ -35,18 +34,18 @@ RUN mkdir -p /var/www/html/default
 
 # Set permissions and ownerships
 RUN find /var/www/html/default \
-         /var/cache/nginx \
-         /var/log/nginx \
-         -type f -exec chmod 644 {} \;
+    /var/cache/nginx \
+    /var/log/nginx \
+    -type f -exec chmod 644 {} \;
 RUN find /var/www/html/default \
-         /var/cache/nginx \
-         /var/log/nginx \
-         -type d -exec chmod 755 {} \;
+    /var/cache/nginx \
+    /var/log/nginx \
+    -type d -exec chmod 755 {} \;
 RUN chown -R php-data:php-data \
     /var/www/html/default \
     /var/cache/nginx \
     /var/log/nginx \
-    /var/run/nginx
+    /var/run/nginx.pid
 
 # Specify user, working directory and default command
 USER php-data

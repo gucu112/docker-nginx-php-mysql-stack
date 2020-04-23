@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Install required php packages
 sudo apt install php-cli php-mbstring php-xml php-zip
 

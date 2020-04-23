@@ -1,3 +1,9 @@
 #!/bin/bash
-# Call mysql from inside mysql-server container as root user and execute script
-sudo -E docker exec -i mysql-server mysql -u root -pdefault < ./var/data/sql/Initial_DB_Script.sql
+
+# Import shared code
+. "$(dirname "$0")/Common_Code.sh"
+
+# Call mysql from inside container as root user and execute initial script
+echo 'Loading initial database script...'
+# TODO: Get rid of user and password in command
+sudo -E $(docker) exec -i $MYSQL_DATABASE_CONTAINER_NAME mysql -u root -pdefault <$PWD/$MYSQL_DATABASE_INITIAL_SCRIPT

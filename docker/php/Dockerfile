@@ -14,12 +14,9 @@ RUN mkdir -p /run
 RUN chown -R php-data:php-data /run
 RUN ln -s /run /var/run
 
-# Create PID file
+# Create PID file and socket directory
+RUN touch /var/run/php.pid
 RUN mkdir /var/run/php
-RUN touch /var/run/php/php.pid
-
-# Create socket file directory
-RUN mkdir /var/run/php/socket
 
 # Install packages and modules
 RUN apt-get update && apt-get install -y \
@@ -52,10 +49,11 @@ RUN touch /var/log/php/fpm.slow.log
 RUN touch /var/log/php/fpm.access.log
 
 # Set permissions and ownerships
-RUN chmod 755 /var/run/php/socket
+RUN chmod 755 /var/run/php
 RUN chown -R php-data:php-data \
     /var/log/php \
-    /var/run/php
+    /var/run/php \
+    /var/run/php.pid
 
 # Specify entrypoint, user, working directory and default command
 ENTRYPOINT [ "docker-php-entrypoint" ]

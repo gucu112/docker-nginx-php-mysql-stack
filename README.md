@@ -1,25 +1,27 @@
-# Docker nginx + php-fpm + mysql-server stack
-
-Project shows simple docker-compose setup for serving PHP application with MySQL database.
+# Docker PHP environment
+```
+nginx + php-fpm + mysql-server
+```
+Project is simple [docker-compose](https://docs.docker.com/compose/) setup which serving PHP application over nginx server and additional MySQL database.
 
 ## Getting started
 
-If you simply follow the guidelines regarding installation and running and then copy over your PHP source files into `public_html` directory, you should be good to go to access them at [localhost](http://localhost:8080) :)
+If you just follow the guidelines regarding installation and running you should be good to go! Copy over your PHP source files into `public_html` directory, and simply access them at [localhost:8080](http://localhost:8080) :)
 
 ### Prerequisites
 
-* Docker
-* docker-compose
+* [Docker](https://www.docker.com/)
+* [docker-compose](https://docs.docker.com/compose/)
 
 ### Installing
 
-Firstly, open terminal in root folder of the project and run initial bash script:
+Firstly, open terminal in root folder of the project and run initial bash script for setting up the environment:
 
-`./sh/00_Create_Directories.sh`
+`./sh/Setup_Environment.sh`
 
-In case if bash scripts are non-executable then please copy over and execute command from this file:
+In case if bash scripts are non-executable then please execute following command from root folder of the project:
 
-`./sh/00_Set_Bin_Executable.sh`
+`sudo find './sh' -maxdepth 1 -type f -name '*.sh' -exec chmod +x {} \;`
 
 You can use following bash scripts to install pre-required software:
 * `./sh/01_Install_Docker.sh`
@@ -29,6 +31,12 @@ You can also install Composer and Symfony additionally:
 * `./sh/03_Install_Composer.sh`
 * `./sh/04_Install_Symfony.sh`
 
+### Configuring
+
+You can define variables for your project in `./docker/.env` file.
+
+TODO: List and describe all the available variables.
+
 ### Building
 
 In order to build containers use following bash script:
@@ -37,9 +45,23 @@ In order to build containers use following bash script:
 
 ### Running
 
-In order to run containers use following bash script:
+Use following bash script to run containers:
 
 `./sh/Run_Docker.sh`
+
+And use this bash script to stop them:
+
+`./sh/Stop_Docker.sh`
+
+### Purging
+
+You can remove all docker containers (even not project related!) and volumes by executing this bash script:
+
+`./sh/Purge_Docker.sh`
+
+Above command will not remove database files. In order to do that you need to execute following bash script:
+
+`./sh/Purge_Database.sh`
 
 ### Additional commands
 
@@ -53,11 +75,11 @@ There is no environment for the project, so there is no need for deployment :)
 
 ## Built with
 
-* Docker
-* docker-compose
-* nginx
-* PHP
-* MySQL
+* [Docker](https://www.docker.com/)
+* [docker-compose](https://docs.docker.com/compose/)
+* [nginx](https://hub.docker.com/_/nginx/)
+* [PHP](https://hub.docker.com/_/php/)
+* [MySQL](https://hub.docker.com/r/mysql/mysql-server/)
 
 ## Contributing
 
@@ -76,3 +98,15 @@ See also the list of [contributors](https://github.com/gucu112/docker-nginx-php-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Changelog
+
+**v20.4.23.0**
+* Bash scripts improvements
+* Docker configuration improvements
+* Simplified pids and socket locations
+* EditorConfig file added
+* README.md updated
+
+**v20.3.20.0**
+* Initial commit
