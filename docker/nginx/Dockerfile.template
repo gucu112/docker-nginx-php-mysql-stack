@@ -1,6 +1,5 @@
 # Set base docker image version
-# Updated: 2020-02-25
-FROM nginx:1.17.8-alpine
+FROM nginx:$NGINX_SERVER_VERSION
 
 # Create user and group
 RUN addgroup --gid 1000 \

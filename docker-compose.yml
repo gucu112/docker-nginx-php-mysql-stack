@@ -5,7 +5,7 @@ services:
   nginx-server:
     build:
       context: ./docker/nginx
-    image: nginx-server:latest
+    image: $NGINX_SERVER_CONTAINER_NAME:$APP_VERSION
     container_name: $NGINX_SERVER_CONTAINER_NAME
     restart: always
     depends_on:
@@ -22,11 +22,11 @@ services:
   php-fpm:
     build:
       context: ./docker/php
-    image: php-fpm:latest
+    image: $PHP_FPM_CONTAINER_NAME:$APP_VERSION
     container_name: $PHP_FPM_CONTAINER_NAME
     restart: always
     depends_on:
-      - mysql-server
+      - mysql-database
     networks:
       - database-net
       - internal-net
@@ -35,10 +35,10 @@ services:
       - php-run-volume:/var/run/php:delegated
       - $PWD/var/log/php:/var/log/php:delegated
 
-  mysql-server:
+  mysql-database:
     build:
       context: ./docker/mysql
-    image: mysql-server:latest
+    image: $MYSQL_DATABASE_CONTAINER_NAME:$APP_VERSION
     container_name: $MYSQL_DATABASE_CONTAINER_NAME
     restart: always
     environment:

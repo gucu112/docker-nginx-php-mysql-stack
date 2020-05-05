@@ -1,3 +1,6 @@
+# Ignore Dockerfiles
+docker/*/Dockerfile
+
 # Exclude var directory content
 var/*
 

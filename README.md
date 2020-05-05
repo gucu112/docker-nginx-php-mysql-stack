@@ -4,6 +4,8 @@ nginx + php-fpm + mysql-server
 ```
 Project is simple [docker-compose](https://docs.docker.com/compose/) setup which serving PHP application over nginx server and additional MySQL database.
 
+This is for **DEVELOPMENT** use only, please do not use it on **PRODUCTION** environments, thank you! :D
+
 ## Getting started
 
 If you just follow the guidelines regarding installation and running you should be good to go! Copy over your PHP source files into `public_html` directory, and simply access them at [localhost:8080](http://localhost:8080) :)
@@ -35,7 +37,7 @@ You can also install Composer and Symfony additionally:
 
 You can define variables for your project in `./docker/.env` file.
 
-TODO: List and describe all the available variables.
+**TODO: List and describe all the available variables.**
 
 ### Building
 
@@ -69,6 +71,12 @@ Above command will not remove database files. In order to do that you need to ex
 2. Load initial DB script by executing `./sh/Load_Database.sh` bash script.
 3. Query database by executing `./sh/Query_Database.sh` bash script.
 
+### Common code
+
+There are 3 functions located in `./sh/Common_Code.sh` file:
+
+**TODO: List and describe all the functions.**
+
 ## Deployment
 
 There is no environment for the project, so there is no need for deployment :)
@@ -100,6 +108,13 @@ See also the list of [contributors](https://github.com/gucu112/docker-nginx-php-
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
+
+**v20.5.5.0**
+* Move docker images versions to .env file
+* Introduce docker images versioning
+* Generating Dockerfiles based on templates
+* Removing orphans during Docker purge
+* README.md updated
 
 **v20.4.23.0**
 * Bash scripts improvements

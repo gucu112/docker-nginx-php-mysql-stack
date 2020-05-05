@@ -51,6 +51,28 @@ function loadScript() {
     . "$scriptPath" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 }
 
+# Function generates Dockerfiles based on template provided in build context directory
+function generateDockerfiles() {
+    # Define local variables
+    local dotEnvPath="$PWD/docker/.env"
+    local sedScriptsList=()
+
+    # Generate sed scripts (extensions) based on .env file
+    for envKeyValuePair in $(grep -v '^#' "$dotEnvPath"); do
+        sedScriptsList+=($(echo $envKeyValuePair | awk -F'=' '{printf "%se \"s#\\$%s#%s#\"","\x2D",$1,$2}'))
+    done
+
+    # Evaluate sed for each build context directory and recreate Dockerfiles
+    for templateFile in $(sudo find "$PWD/docker" -maxdepth 2 -type f -name 'Dockerfile.template'); do
+        local buildContextDirectory=$(dirname "$templateFile")
+        local destinationFile="$buildContextDirectory/Dockerfile"
+        echo "Removing '${destinationFile/$PWD/.}'..."
+        sudo -E rm -f "$destinationFile"
+        echo "Generating Dockerfile for '${buildContextDirectory/$PWD/.}' build context directory..."
+        eval "sed ${sedScriptsList[@]} $templateFile >> $destinationFile"
+    done
+}
+
 # Get Docker command
 function docker() {
     echo "$DOCKER"

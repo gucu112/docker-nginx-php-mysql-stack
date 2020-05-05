@@ -1,6 +1,5 @@
 # Set base docker image version
-# Updated: 2020-02-26
-FROM mysql/mysql-server:8.0.19-1.1.15-amd64
+FROM mysql/mysql-server:$MYSQL_DATABASE_VERSION
 
 # Setup run directories
 RUN mkdir -p /run

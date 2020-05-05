@@ -1,6 +1,5 @@
 # Set base docker image version
-# Updated: 2020-03-03
-FROM php:7.4.3-fpm
+FROM php:$PHP_FPM_VERSION
 
 # Create user and group
 RUN addgroup --gid 1000 \
