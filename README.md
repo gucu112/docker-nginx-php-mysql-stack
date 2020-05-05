@@ -101,13 +101,17 @@ No versioning is applied to the project.
 
 * **Bartlomiej Roszczypala** - [Gucu112](https://github.com/Gucu112)
 
-See also the list of [contributors](https://github.com/gucu112/docker-nginx-php-mysql-stack/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/gucu112/docker-php-environment/contributors) who participated in this project.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
+
+**v20.5.5.1**
+* Update contributors GitHub link
+* Update version :D
 
 **v20.5.5.0**
 * Move docker images versions to .env file
