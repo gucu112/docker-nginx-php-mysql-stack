@@ -35,7 +35,7 @@ You can also install Composer and Symfony additionally:
 
 ### Configuring
 
-You can define variables for your project in `./docker/.env` file.
+You can define variables for your project in `.env` file.
 
 **TODO: List and describe all the available variables.**
 
@@ -95,7 +95,7 @@ There are no contribution rules established.
 
 ## Versioning
 
-No versioning is applied to the project.
+**TODO: Describe project versioning.**
 
 ## Authors
 
@@ -108,6 +108,18 @@ See also the list of [contributors](https://github.com/gucu112/docker-php-enviro
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
+
+**TODO**
+* Make MySQL port configurable
+* Update PHP configuration
+* Update README.md
+
+**v20.5.22.0**
+* Link containers configuration through directories
+* Make port for nginx configurable
+* Generate MySQL client passwords inside container
+* Add container configuration testing
+* Move .env file to root directory
 
 **v20.5.5.1**
 * Update contributors GitHub link

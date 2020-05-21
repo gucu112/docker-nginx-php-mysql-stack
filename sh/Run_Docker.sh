@@ -6,6 +6,9 @@
 # Load Stop_Docker.sh script
 loadScript Stop_Docker.sh
 
+# Load Test_Docker.sh script
+loadScript Test_Docker.sh
+
 # If build flag specified
 if [ "$1" = '--build' ]; then
     # Then build and start Docker images in background

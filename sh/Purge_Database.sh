@@ -9,3 +9,4 @@ loadScript Stop_Docker.sh
 # Remove database files
 echo 'Removing database files...'
 sudo -E rm -rf $PWD/var/data/mysql/*
+echo 'Done.'

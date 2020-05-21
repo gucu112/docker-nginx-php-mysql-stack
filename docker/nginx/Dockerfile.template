@@ -19,14 +19,19 @@ RUN touch /var/run/nginx.pid
 # Remove default configuration
 RUN rm -f /etc/nginx/conf.d/default.conf
 
-# Copy over configuration files
-COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY ./default.conf /etc/nginx/conf.d/default.conf
+# Copy over main configuration file
+COPY ./config/nginx.conf /etc/nginx/nginx.conf
 
-# Create logging directory and files
+# Mount volume for other configuration files
+VOLUME [ "/etc/nginx/conf.d" ]
+
+# Create log directory and files
 RUN mkdir -p /var/log/nginx
 RUN touch /var/log/nginx/error.log
 RUN touch /var/log/nginx/access.log
+
+# Mount volume for log files
+VOLUME [ "/var/log/nginx" ]
 
 # Create work directory
 RUN mkdir -p /var/www/html/default

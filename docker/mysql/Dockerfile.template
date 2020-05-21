@@ -9,13 +9,24 @@ RUN ln -s /run /var/run
 # Create PID file
 RUN touch /var/run/mysql.pid
 
-# Copy over configuration file
-COPY ./my.cnf /etc/my.cnf
+# Generate client passwords inside container
+RUN echo -e "[client]\nuser=root\npassword=$MYSQL_DATABASE_ROOT_PASSWORD\nhost=localhost" > ~/.my.cnf
+RUN echo -e "[dev]\nuser=dev\npassword=dev\nhost=localhost" >> ~/.my.cnf
 
-# Create logging directory and files
+# Copy over main configuration file
+ADD ./config/my.cnf /etc/my.cnf
+
+# Mount volume for other configuration files
+VOLUME [ "/etc/my.cnf.d" ]
+
+# Create log directory and files
 RUN mkdir -p /var/log/mysql
 RUN touch /var/log/mysql/general.log
+RUN touch /var/log/mysql/error.log
 RUN touch /var/log/mysql/slow.log
+
+# Mount volume for log files
+VOLUME [ "/var/log/mysql" ]
 
 # Set permissions and ownerships
 RUN chown -R mysql:mysql \

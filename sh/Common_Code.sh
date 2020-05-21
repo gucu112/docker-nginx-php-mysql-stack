@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Function loads environment variables from './docker/.env' file
+# Function loads environment variables from .env file
 function loadEnvironment() {
     # Define local variables
-    local dotEnvPath="$PWD/docker/.env"
+    local dotEnvPath="$PWD/.env"
 
     # Make .env file readable
     sudo chmod +r "$dotEnvPath"
@@ -54,7 +54,7 @@ function loadScript() {
 # Function generates Dockerfiles based on template provided in build context directory
 function generateDockerfiles() {
     # Define local variables
-    local dotEnvPath="$PWD/docker/.env"
+    local dotEnvPath="$PWD/.env"
     local sedScriptsList=()
 
     # Generate sed scripts (extensions) based on .env file
