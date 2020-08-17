@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Update software repositories
-apt-get update
+sudo apt-get update
 # Uninstall old versions of Docker
-apt-get --yes remove docker docker-engine docker.io
+sudo apt-get --yes remove docker docker-engine docker.io
 # Install Docker
-apt-get --yes install docker.io
+sudo apt-get --yes install docker.io
 # Start Docker service
-systemctl start docker
+sudo systemctl start docker
 # Enable Docker service
-systemctl enable docker
+sudo systemctl enable docker
 # Check Docker version
 docker --version

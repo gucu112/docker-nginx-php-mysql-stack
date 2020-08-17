@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Function loads environment variables from .env file
-function loadEnvironment() {
+# Function gets environment variables and returns it
+function getEnvironmentVariables() {
     # Define local variables
     local dotEnvPath="$PWD/.env"
 
@@ -14,9 +14,16 @@ function loadEnvironment() {
         exit 10
     fi
 
+    # Show environment variables
+    echo "USER_ID=$(id -u) GROUP_ID=$(id -g)" \
+        $(grep -v '^#' "$dotEnvPath")
+}
+
+# Function loads environment variables
+function loadEnvironment() {
     # Export environment variables
     echo 'Loading environment variables...'
-    export $(grep -v '^#' "$dotEnvPath")
+    export $(getEnvironmentVariables)
     echo 'Done.'
 }
 
@@ -54,11 +61,10 @@ function loadScript() {
 # Function generates Dockerfiles based on template provided in build context directory
 function generateDockerfiles() {
     # Define local variables
-    local dotEnvPath="$PWD/.env"
     local sedScriptsList=()
 
     # Generate sed scripts (extensions) based on .env file
-    for envKeyValuePair in $(grep -v '^#' "$dotEnvPath"); do
+    for envKeyValuePair in $(getEnvironmentVariables); do
         sedScriptsList+=($(echo $envKeyValuePair | awk -F'=' '{printf "%se \"s#\\$%s#%s#\"","\x2D",$1,$2}'))
     done
 

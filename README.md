@@ -110,9 +110,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Changelog
 
 **TODO**
+* Add Apache server support
 * Make MySQL port configurable
+* Make public folder configurable
 * Update PHP configuration
 * Update README.md
+
+**v20.8.17.0**
+* Resolve host user and group dynamically
+* Bash scripts improvements
+* Update .editorconfig file
+* Update version and changelog
 
 **v20.5.22.0**
 * Link containers configuration through directories

@@ -2,9 +2,9 @@
 FROM nginx:$NGINX_SERVER_VERSION
 
 # Create user and group
-RUN addgroup --gid 1000 \
+RUN addgroup --gid $GROUP_ID \
     --system php-data
-RUN adduser --uid 1000 \
+RUN adduser --uid $USER_ID \
     --ingroup php-data \
     --system php-data
 

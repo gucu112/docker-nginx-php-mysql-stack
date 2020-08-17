@@ -1,10 +1,10 @@
 # Set base docker image version
-FROM php:$PHP_FPM_VERSION
+FROM php:7.4.5-fpm
 
 # Create user and group
-RUN addgroup --gid 1000 \
+RUN addgroup --gid $GROUP_ID \
     --system php-data
-RUN adduser --uid 1000 \
+RUN adduser --uid $USER_ID \
     --ingroup php-data \
     --system php-data
 
@@ -17,18 +17,23 @@ RUN ln -s /run /var/run
 RUN touch /var/run/php.pid
 RUN mkdir /var/run/php
 
-# Install packages and modules
+# Install system packages
 RUN apt-get update && apt-get install -y \
     libmcrypt-dev \
     libonig-dev \
     libxml2-dev \
-    libzip-dev && \
-    docker-php-ext-install intl && \
-    docker-php-ext-install sockets && \
-    docker-php-ext-install pdo_mysql && \
-    docker-php-ext-install opcache && \
-    docker-php-ext-install zip && \
-    docker-php-source delete
+    libzip-dev
+
+# Install PHP modules
+RUN docker-php-ext-install \
+    intl \
+    sockets \
+    pdo_mysql \
+    opcache \
+    zip
+
+# Remove PHP source code
+RUN docker-php-source delete
 
 # Remove default configuration
 RUN rm /usr/local/etc/php-fpm.d/www.conf
