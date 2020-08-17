@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Function gets environment variables and returns it
+############
+# Functions
+############
+
 function getEnvironmentVariables() {
     # Define local variables
     local dotEnvPath="$PWD/.env"
@@ -19,7 +22,6 @@ function getEnvironmentVariables() {
         $(grep -v '^#' "$dotEnvPath")
 }
 
-# Function loads environment variables
 function loadEnvironment() {
     # Export environment variables
     echo 'Loading environment variables...'
@@ -27,12 +29,6 @@ function loadEnvironment() {
     echo 'Done.'
 }
 
-# Load environment variables if no docker nor docker-compose commands specified
-if [ -z "$DOCKER" ] && [ -z "$DOCKER_COMPOSE" ]; then
-    loadEnvironment
-fi
-
-# Function loads single script from './sh' directory
 function loadScript() {
     # Check whether script name provided
     if [ -z "$1" ]; then
@@ -58,7 +54,6 @@ function loadScript() {
     . "$scriptPath" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 }
 
-# Function generates Dockerfiles based on template provided in build context directory
 function generateDockerfiles() {
     # Define local variables
     local sedScriptsList=()
@@ -79,12 +74,23 @@ function generateDockerfiles() {
     done
 }
 
-# Get Docker command
+############
+# Wrappers
+############
+
 function docker() {
-    echo "$DOCKER"
+    echo "$DOCKER_COMMAND"
 }
 
-# Get Docker Compose command
 function dockerCompose() {
-    echo "$DOCKER_COMPOSE"
+    echo "$DOCKER_COMPOSE_COMMAND"
 }
+
+############
+# Hooks
+############
+
+# Load environment variables if no docker nor docker-compose commands specified
+if [ -z "$DOCKER_COMMAND" ] && [ -z "$DOCKER_COMPOSE_COMMAND" ]; then
+    loadEnvironment
+fi

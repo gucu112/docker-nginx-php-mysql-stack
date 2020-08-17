@@ -1,5 +1,5 @@
 # Set base docker image version
-FROM php:7.4.5-fpm
+FROM php:$PHP_FPM_VERSION
 
 # Create user and group
 RUN addgroup --gid $GROUP_ID \

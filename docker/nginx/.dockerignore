@@ -1,0 +1,5 @@
+# Ignore hidden files
+.*
+
+# Exclude template files
+*.template

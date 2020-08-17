@@ -37,7 +37,20 @@ You can also install Composer and Symfony additionally:
 
 You can define variables for your project in `.env` file.
 
-**TODO: List and describe all the available variables.**
+| Variable name | Default value | Description |
+| ------------- | ------------- | ----------- |
+| **DOCKER_COMMAND** | *docker* | Command to be executed when calling `docker` |
+| **DOCKER_COMPOSE_COMMAND** | *docker-compose* | Command to be executed when calling `docker-compose` |
+| **APP_VERSION** | *{current_version}* | Current version of application |
+| **NGINX_SERVER_CONTAINER_NAME** | *nginx-server* | Docker image name for `nginx` container |
+| **NGINX_SERVER_VERSION** | *1.18.0-alpine* | Docker image version for `nginx` container |
+| **NGINX_SERVER_PORT** | *8080* | Docker public port for `nginx` container |
+| **PHP_FPM_CONTAINER_NAME** | *php-fpm* | Docker image name for `php` container |
+| **PHP_FPM_VERSION** | *7.4.5-fpm* | Docker image version for `php` container |
+| **MYSQL_DATABASE_CONTAINER_NAME** | *mysql-database* | Docker image name for `mysql-server` container |
+| **MYSQL_DATABASE_VERSION** | *8.0.20-1.1.16-amd64* | Docker image version for `mysql-server` container |
+| **MYSQL_DATABASE_ROOT_PASSWORD** | *default* | MySQL root user password |
+| **MYSQL_DATABASE_INITIAL_SCRIPT** | *./docker/mysql/initialScript.sql* | Path to initial SQL script (absolute or relative to project directory) |
 
 ### Building
 
@@ -73,13 +86,23 @@ Above command will not remove database files. In order to do that you need to ex
 
 ### Common code
 
-There are 3 functions located in `./sh/Common_Code.sh` file:
+There are 4 main functions located in `./sh/Common_Code.sh` file:
 
-**TODO: List and describe all the functions.**
+* `getEnvironmentVariables()` function generates environment variables combining `.env` file and dynamic host user and group,
+* `loadEnvironment()` function exports environment variables for newly forked child processes,
+* `loadScript()` function loads single script from './sh' directory,
+* `generateDockerfiles()` function generates Dockerfiles based on template provided in build context directory.
+
+Other functions are just wrappers for commands defined in `.env` file:
+
+* `docker()` for `docker` command,
+* `dockerCompose()` for `docker-compose` command.
 
 ## Deployment
 
-There is no environment for the project, so there is no need for deployment :)
+There are no deployment procedure established yet.
+
+**TODO: Create deployment procedure**
 
 ## Built with
 
@@ -91,11 +114,24 @@ There is no environment for the project, so there is no need for deployment :)
 
 ## Contributing
 
-There are no contribution rules established.
+There are no contribution rules established yet.
+
+**TODO: Create contribution rules**
 
 ## Versioning
 
-**TODO: Describe project versioning.**
+Project versioning pattern is defined as follows:
+
+```
+v{yy}.{M}.{d}.{r}
+```
+
+**Legend:**
+
+* {yy} - 2-digits year, range from 00 to 99
+* {M} - month, range from 1 to 12
+* {d} - day of the month, range from 1 to 31
+* {r} - revison number, incrementing for each daily version, starting from 0
 
 ## Authors
 
@@ -115,6 +151,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * Make public folder configurable
 * Update PHP configuration
 * Update README.md
+
+**v20.8.17.1**
+* Fix missing PHP container version
+* README.md improvements
+* Small changes to environment variables naming
+* Add .dockerignore files
+* Update version
 
 **v20.8.17.0**
 * Resolve host user and group dynamically

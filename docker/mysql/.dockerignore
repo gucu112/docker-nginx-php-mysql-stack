@@ -1,0 +1,8 @@
+# Ignore hidden files
+.*
+
+# Exclude template files
+*.template
+
+# Exclude initial script
+initialScript.sql
