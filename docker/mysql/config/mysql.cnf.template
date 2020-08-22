@@ -1,7 +1,10 @@
 [mysql]
+port = $MYSQL_DATABASE_PORT
 socket = /var/lib/mysql/mysql.sock
 
 [mysqld]
+bind_address = *
+port = $MYSQL_DATABASE_PORT
 datadir = /var/lib/mysql
 secure_file_priv = /var/lib/mysql-files
 pid_file = /var/run/mysql.pid

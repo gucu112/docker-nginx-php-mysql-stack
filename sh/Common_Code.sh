@@ -8,9 +8,6 @@ function getEnvironmentVariables() {
     # Define local variables
     local dotEnvPath="$PWD/.env"
 
-    # Make .env file readable
-    sudo chmod +r "$dotEnvPath"
-
     # Check whether .env file is readable
     if [ ! -r "$dotEnvPath" ]; then
         echo 'Error! Either there is no .env file or no read permission.'
@@ -20,13 +17,6 @@ function getEnvironmentVariables() {
     # Show environment variables
     echo "USER_ID=$(id -u) GROUP_ID=$(id -g)" \
         $(grep -v '^#' "$dotEnvPath")
-}
-
-function loadEnvironment() {
-    # Export environment variables
-    echo 'Loading environment variables...'
-    export $(getEnvironmentVariables)
-    echo 'Done.'
 }
 
 function loadScript() {
@@ -40,9 +30,6 @@ function loadScript() {
     local shDirectory="$(dirname "$0")"
     local scriptPath="$shDirectory/$1"
 
-    # Make scripts executable
-    sudo find $shDirectory -maxdepth 1 -type f -name '*.sh' -exec chmod +x {} \;
-
     # Check whether particular script is executable
     if [ ! -x "$scriptPath" ]; then
         echo 'Error! Either there is no file or no executable permission.'
@@ -54,23 +41,57 @@ function loadScript() {
     . "$scriptPath" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
 }
 
-function generateDockerfiles() {
+function createFileFromTemplate() {
+    # Check whether template path provided
+    if [ -z "$1" ]; then
+        echo 'Error! No arguments supplied. Please specify template path.'
+        exit 1
+    fi
+
+    # Check whether destination path provided
+    if [ -z "$2" ]; then
+        echo 'Error! No arguments supplied. Please specify destination path.'
+        exit 1
+    fi
+
     # Define local variables
+    local destinationPath="$2"
+    local templatePath="$1"
     local sedScriptsList=()
 
-    # Generate sed scripts (extensions) based on .env file
+    # Generate sed scripts (extensions) based on environment variables
     for envKeyValuePair in $(getEnvironmentVariables); do
         sedScriptsList+=($(echo $envKeyValuePair | awk -F'=' '{printf "%se \"s#\\$%s#%s#\"","\x2D",$1,$2}'))
     done
 
-    # Evaluate sed for each build context directory and recreate Dockerfiles
+    # Remove destination file if exists
+    sudo -E rm -f "$destinationFile"
+
+    # Evaluate sed for given template and generate desination file
+    eval "sed ${sedScriptsList[@]} $templatePath >> $destinationPath"
+}
+
+function generateDockerfiles() {
+    # Create Dockerfile using template (and replace environment variables) for each build context directory
     for templateFile in $(sudo find "$PWD/docker" -maxdepth 2 -type f -name 'Dockerfile.template'); do
         local buildContextDirectory=$(dirname "$templateFile")
         local destinationFile="$buildContextDirectory/Dockerfile"
-        echo "Removing '${destinationFile/$PWD/.}'..."
-        sudo -E rm -f "$destinationFile"
         echo "Generating Dockerfile for '${buildContextDirectory/$PWD/.}' build context directory..."
-        eval "sed ${sedScriptsList[@]} $templateFile >> $destinationFile"
+        createFileFromTemplate "$templateFile" "$destinationFile"
+    done
+}
+
+function generateContainersConfiguration() {
+    # Define local variables
+    local configurationFiles=(nginx/config/nginx.conf mysql/config/mysql.cnf)
+
+    # Create configuration file using template for each file specified above
+    for configurationFile in ${configurationFiles[@]}; do
+        local destinationFile="$PWD/docker/$configurationFile"
+        local templateFile="$destinationFile.template"
+        local buildContextDirectory=$(dirname "$templateFile")
+        echo "Generating '${destinationFile/$PWD/.}' configuration file..."
+        createFileFromTemplate "$templateFile" "$destinationFile"
     done
 }
 
@@ -78,19 +99,30 @@ function generateDockerfiles() {
 # Wrappers
 ############
 
-function docker() {
-    echo "$DOCKER_COMMAND"
-}
+function docker() { echo "$DOCKER_COMMAND"; }
 
-function dockerCompose() {
-    echo "$DOCKER_COMPOSE_COMMAND"
-}
+function dockerCompose() { echo "$DOCKER_COMPOSE_COMMAND"; }
 
 ############
 # Hooks
 ############
 
-# Load environment variables if no docker nor docker-compose commands specified
+if [ ! -e "$PWD/.env" ]; then
+    echo 'Copying dotenv file...'
+    cp "$PWD/.env.example" "$PWD/.env"
+    echo 'Granting read permission...'
+    sudo chmod +r "$PWD/.env"
+    echo 'Done.'
+fi
+
+if [ "$(find ./sh -maxdepth 1 -type f -executable | wc -l)" -lt "$(ls ./sh | wc -l)" ]; then
+    echo 'Making scripts executable...'
+    sudo find "$PWD/sh" -maxdepth 1 -type f -name '*.sh' -exec chmod +x {} \;
+    echo 'Done.'
+fi
+
 if [ -z "$DOCKER_COMMAND" ] && [ -z "$DOCKER_COMPOSE_COMMAND" ]; then
-    loadEnvironment
+    echo 'Loading environment variables...'
+    export $(getEnvironmentVariables)
+    echo 'Done.'
 fi

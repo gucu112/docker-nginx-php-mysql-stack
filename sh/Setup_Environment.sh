@@ -12,9 +12,9 @@ sudo -E chown -R $(id -u):$(id -g) \
     $PWD/var/log/nginx
 
 # Set public files and directories chmods and ownership
-sudo -E find $PWD/public_html -type f -exec chmod 644 {} \;
-sudo -E find $PWD/public_html -type d -exec chmod 755 {} \;
-sudo -E chown -R $(id -u):$(id -g) $PWD/public_html
+sudo -E find $PWD/$NGINX_SERVER_PUBLIC_DIRECTORY -type f -exec chmod 644 {} \;
+sudo -E find $PWD/$NGINX_SERVER_PUBLIC_DIRECTORY -type d -exec chmod 755 {} \;
+sudo -E chown -R $(id -u):$(id -g) $PWD/$NGINX_SERVER_PUBLIC_DIRECTORY
 
 echo "Setting up structure for '$PHP_FPM_CONTAINER_NAME' container..."
 

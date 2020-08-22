@@ -14,7 +14,7 @@ RUN echo -e "[client]\nuser=root\npassword=$MYSQL_DATABASE_ROOT_PASSWORD\nhost=l
 RUN echo -e "[dev]\nuser=dev\npassword=dev\nhost=localhost" >> ~/.my.cnf
 
 # Copy over main configuration file
-ADD ./config/my.cnf /etc/my.cnf
+ADD ./config/mysql.cnf /etc/my.cnf
 
 # Mount volume for other configuration files
 VOLUME [ "/etc/my.cnf.d" ]

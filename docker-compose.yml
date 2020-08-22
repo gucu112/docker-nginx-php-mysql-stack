@@ -13,9 +13,9 @@ services:
     networks:
       - internal-net
     ports:
-      - '$NGINX_SERVER_PORT:8080'
+      - '$NGINX_SERVER_PORT:$NGINX_SERVER_PORT'
     volumes:
-      - source-volume:/var/www/html/default:cached
+      - source-volume:/var/www/html:cached
       - php-run-volume:/var/run/php:delegated
       - $PWD/docker/nginx/config/conf.d:/etc/nginx/conf.d:cached
       - $PWD/var/log/nginx:/var/log/nginx:delegated
@@ -32,7 +32,7 @@ services:
       - database-net
       - internal-net
     volumes:
-      - source-volume:/var/www/html/default:cached
+      - source-volume:/var/www/html:cached
       - php-run-volume:/var/run/php:delegated
       - $PWD/docker/php/config/php-fpm.d:/usr/local/etc/php-fpm.d:cached
       - $PWD/var/log/php:/var/log/php:delegated
@@ -42,14 +42,14 @@ services:
       context: ./docker/mysql
     image: $MYSQL_DATABASE_CONTAINER_NAME:$APP_VERSION
     container_name: $MYSQL_DATABASE_CONTAINER_NAME
-    restart: always
+    restart: on-failure
     environment:
       - MYSQL_ROOT_PASSWORD=$MYSQL_DATABASE_ROOT_PASSWORD
       - MYSQL_LOG_CONSOLE=
     networks:
       - database-net
     expose:
-      - '3306'
+      - '$MYSQL_DATABASE_PORT'
     volumes:
       - mysql-data-volume:/var/lib/mysql:cached
       - $PWD/docker/mysql/config/my.cnf.d:/etc/my.cnf.d:cached

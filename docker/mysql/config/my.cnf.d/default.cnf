@@ -1,11 +1,8 @@
 [mysql]
-port = 3306
 # https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_auto-rehash
 auto_rehash
 
 [mysqld]
-bind_address = *
-port = 3306
 connect_timeout = 60
 key_buffer_size = 16M
 max_allowed_packet = 128M

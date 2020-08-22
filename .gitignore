@@ -1,5 +1,12 @@
-# Ignore Dockerfiles
+# Ignore .env file
+.env
+
+# Ignore generated Dockerfiles
 docker/*/Dockerfile
+
+# Ignore generated configs
+docker/nginx/config/nginx.cnf
+docker/mysql/config/mysql.cnf
 
 # Exclude var directory content
 var/*

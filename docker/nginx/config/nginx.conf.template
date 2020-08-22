@@ -21,8 +21,19 @@ http {
   keepalive_timeout 65;
   types_hash_max_size 1024;
 
-  # TODO: Enable gzip compression
+  server {
+    listen $NGINX_SERVER_PORT default;
+    listen [::]:$NGINX_SERVER_PORT default ipv6only=on;
 
-  include /etc/nginx/conf.d/*.conf;
+    server_name localhost;
+
+    access_log /var/log/nginx/access.log main;
+
+    charset utf-8;
+    root /var/www/html/$NGINX_SERVER_PUBLIC_DIRECTORY;
+
+    include /etc/nginx/conf.d/*.conf;
+  }
+
   include /etc/nginx/sites-enabled/*.conf;
 }

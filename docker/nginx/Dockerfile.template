@@ -34,24 +34,24 @@ RUN touch /var/log/nginx/access.log
 VOLUME [ "/var/log/nginx" ]
 
 # Create work directory
-RUN mkdir -p /var/www/html/default
+RUN mkdir -p /var/www/html
 
 # Set permissions and ownerships
-RUN find /var/www/html/default \
+RUN find /var/www/html \
     /var/cache/nginx \
     /var/log/nginx \
     -type f -exec chmod 644 {} \;
-RUN find /var/www/html/default \
+RUN find /var/www/html \
     /var/cache/nginx \
     /var/log/nginx \
     -type d -exec chmod 755 {} \;
 RUN chown -R php-data:php-data \
-    /var/www/html/default \
+    /var/www/html \
     /var/cache/nginx \
     /var/log/nginx \
     /var/run/nginx.pid
 
 # Specify user, working directory and default command
 USER php-data
-WORKDIR /var/www/html/default
+WORKDIR /var/www/html
 CMD [ "nginx", "-g", "daemon off;" ]
