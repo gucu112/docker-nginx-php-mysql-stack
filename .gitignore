@@ -5,7 +5,7 @@
 docker/*/Dockerfile
 
 # Ignore generated configs
-docker/nginx/config/nginx.cnf
+docker/nginx/config/nginx.conf
 docker/mysql/config/mysql.cnf
 
 # Exclude var directory content

@@ -183,6 +183,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   * Rework "Common Code" section
   * Amendments after the last update
 
+**v20.8.22.1**
+* Fix typo in .gitignore file
+* Update version
+
 **v20.8.22.0**
 * Generate containers main configuration
 * Make MySQL port configurable
