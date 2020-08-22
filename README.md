@@ -179,9 +179,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   * Add own comments if needed
 * Move sudo prefix to docker command environment variable
 * Update README.md
-  * 2 missing sections (deployment and contribution guide)
-  * Rework "Common Code" section
-  * Amendments after the last update
+  * Create deployment guide
+  * Create contribution rules
+
+**v20.8.23.0**
+* Create deployment scrtipt
+* Apply different IDs for MySQL directories which depends on operating system
+* Small nginx configuraiton update
+* Update version and changelog
 
 **v20.8.22.1**
 * Fix typo in .gitignore file
