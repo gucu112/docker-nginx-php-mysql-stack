@@ -36,8 +36,16 @@ echo "Setting up structure for '$MYSQL_DATABASE_CONTAINER_NAME' container..."
 sudo -E mkdir -p \
     $PWD/var/data/mysql \
     $PWD/var/log/mysql
-sudo -E chown -R 27:27 \
-    $PWD/var/data/mysql \
-    $PWD/var/log/mysql
+
+# Apply correct IDs for permissions which depends on operating system
+if [ "$(uname)" = "Darwin" ]; then
+    sudo -E chown -R 0:0 \
+        $PWD/var/data/mysql \
+        $PWD/var/log/mysql
+elif [ "$(uname)" = "Linux" ]; then
+    sudo -E chown -R 27:27 \
+        $PWD/var/data/mysql \
+        $PWD/var/log/mysql
+fi
 
 echo 'Done.'
