@@ -5,15 +5,19 @@
 
 # Check whether project path provided
 if [ -z "$1" ]; then
-    echo 'Error! No arguments supplied. Please specify project path.'
+    echo -e '\e[1;31mError!\e[0m No arguments supplied. Please specify project path.'
     exit 1
 fi
 
 # Check whether project path is directory
 if [ ! -d "$1" ]; then
-    echo 'Error! Project path is not a directory.'
+    echo -e '\e[1;31mError!\e[0m Project path is not a directory.'
     exit 10
 fi
+
+###
+# TODO: Update copying docker directory
+###
 
 # Copy over docker directory
 echo 'Copying docker configuration...'
@@ -25,6 +29,10 @@ if [ ! -d "$1/$NGINX_SERVER_PUBLIC_DIRECTORY" ]; then
     echo 'Creating nginx public directory...'
     mkdir "$1/$NGINX_SERVER_PUBLIC_DIRECTORY"
 fi
+
+###
+# TODO: Update copying sh directory
+###
 
 # Copy over sh directory
 echo 'Copying bash scripts configuration...'
@@ -41,8 +49,5 @@ fi
 # TODO: Add .env.example variables to .env if not yet there
 ###
 
-# Copy over docker compose file
-cp -r "$PWD/docker-compose.yml" "$1/docker-compose.yml"
-
-# Report script end
+# Report script done state
 echo 'Done.'

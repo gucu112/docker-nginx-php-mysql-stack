@@ -5,5 +5,5 @@
 
 # Reload nginx inside container
 echo 'Reloading nginx server...'
-sudo -E $(docker) exec -it $NGINX_SERVER_CONTAINER_NAME nginx -s reload
+$(docker) exec -it $NGINX_SERVER_CONTAINER_NAME nginx -s reload
 echo 'Done.'

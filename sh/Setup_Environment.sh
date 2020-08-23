@@ -46,6 +46,9 @@ elif [ "$(uname)" = "Linux" ]; then
     sudo -E chown -R 27:27 \
         $PWD/var/data/mysql \
         $PWD/var/log/mysql
+else
+    echo -e "\e[1;31mError!\e[0m Operating system does not support '$MYSQL_DATABASE_CONTAINER_NAME' container."
+    exit 100
 fi
 
 echo 'Done.'

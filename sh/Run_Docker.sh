@@ -14,12 +14,12 @@ if [ "$1" = '--build' ]; then
     # Then build and start Docker images in background
     echo 'Building docker containers...'
     echo 'Starting docker containers...'
-    sudo -E $(dockerCompose) up --build --detach
+    $(dockerCompose) up --build --detach
     echo 'Done.'
 else
     # Else only start Docker images in background
     echo 'Starting docker containers...'
-    sudo -E $(dockerCompose) up --detach
+    $(dockerCompose) up --detach
     echo 'Done.'
 fi
 

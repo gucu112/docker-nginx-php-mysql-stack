@@ -10,7 +10,7 @@ function getEnvironmentVariables() {
 
     # Check whether .env file is readable
     if [ ! -r "$dotEnvPath" ]; then
-        echo 'Error! Either there is no .env file or no read permission.'
+        echo -e '\e[1;31mError!\e[0m Either there is no .env file or no read permission.'
         exit 10
     fi
 
@@ -22,7 +22,7 @@ function getEnvironmentVariables() {
 function loadScript() {
     # Check whether script name provided
     if [ -z "$1" ]; then
-        echo 'Error! No arguments supplied. Please specify script name.'
+        echo -e '\e[1;31mError!\e[0m No arguments supplied. Please specify script name.'
         exit 1
     fi
 
@@ -32,7 +32,7 @@ function loadScript() {
 
     # Check whether particular script is executable
     if [ ! -x "$scriptPath" ]; then
-        echo 'Error! Either there is no file or no executable permission.'
+        echo -e '\e[1;31mError!\e[0m Either there is no file or no executable permission.'
         exit 10
     fi
 
@@ -44,13 +44,13 @@ function loadScript() {
 function createFileFromTemplate() {
     # Check whether template path provided
     if [ -z "$1" ]; then
-        echo 'Error! No arguments supplied. Please specify template path.'
+        echo -e '\e[1;31mError!\e[0m No arguments supplied. Please specify template path.'
         exit 1
     fi
 
     # Check whether destination path provided
     if [ -z "$2" ]; then
-        echo 'Error! No arguments supplied. Please specify destination path.'
+        echo -e '\e[1;31mError!\e[0m No arguments supplied. Please specify destination path.'
         exit 1
     fi
 
@@ -95,13 +95,34 @@ function generateContainersConfiguration() {
     done
 }
 
+function getContainerEnvironmentPrefix() {
+    # Check whether container short name provided
+    if [ -z "$1" ]; then
+        echo -e '\e[1;31mError!\e[0m No arguments supplied. Please specify container short name.'
+        exit 1
+    fi
+
+    # Show environment variable prefix for particular container
+    case $1 in
+    nginx)
+        echo 'NGINX_SERVER'
+        ;;
+    php)
+        echo 'PHP_FPM'
+        ;;
+    mysql)
+        echo 'MYSQL_DATABASE'
+        ;;
+    esac
+}
+
 ############
 # Wrappers
 ############
 
-function docker() { echo "$DOCKER_COMMAND"; }
+function docker() { echo "sudo -E docker"; }
 
-function dockerCompose() { echo "$DOCKER_COMPOSE_COMMAND"; }
+function dockerCompose() { echo "sudo -E docker-compose"; }
 
 ############
 # Hooks
@@ -116,13 +137,32 @@ if [ ! -e "$PWD/.env" ]; then
 fi
 
 if [ "$(find ./sh -maxdepth 1 -type f -executable | wc -l)" -lt "$(ls ./sh | wc -l)" ]; then
-    echo 'Making scripts executable...'
+    echo 'Making bash scripts executable...'
     sudo find "$PWD/sh" -maxdepth 1 -type f -name '*.sh' -exec chmod +x {} \;
     echo 'Done.'
 fi
 
-if [ -z "$DOCKER_COMMAND" ] && [ -z "$DOCKER_COMPOSE_COMMAND" ]; then
+if [ -z "$COMPOSE_PROJECT_NAME" ]; then
     echo 'Loading environment variables...'
     export $(getEnvironmentVariables)
+    echo 'Done.'
+fi
+
+if [ "$(echo "$COMPOSE_FILE" | awk -F: '{print NF-1}')" -eq '0' ]; then
+    echo 'Enabling containers...'
+    ###
+    # TODO: Move docker build context directories list to configuration?
+    ###
+    declare -a containersOrder=(nginx php mysql)
+    for containerName in ${containersOrder[@]}; do
+        declare environmentKeyPrefix="$(getContainerEnvironmentPrefix "$containerName")"
+        declare containerNameEnvKey=""$environmentKeyPrefix"_CONTAINER_NAME"
+        declare containerSwitchEnvKey=""$environmentKeyPrefix"_CONTAINER_SWITCH"
+        if [[ "$environmentKeyPrefix" != "" ]] && [[ "$COMPOSE_FILE" != *"$containerName"* ]] &&
+            ([ "${!containerSwitchEnvKey}" = '1' ] || [ "${!containerSwitchEnvKey^}" = 'True' ]); then
+            echo "Enabling '${!containerNameEnvKey}' container..."
+            export "COMPOSE_FILE=$COMPOSE_FILE:./docker/$containerName/docker-compose.yml"
+        fi
+    done
     echo 'Done.'
 fi

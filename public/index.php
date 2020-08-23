@@ -4,7 +4,7 @@
   <body>
     <div>
       <h2>Server variables:</h2>
-      <p><?php print('<pre>'.print_r($_SERVER, true).'</pre>'); ?></p>
+      <p><?php print('<pre>' . print_r($_SERVER, true) . '</pre>');?></p>
     </div>
     <div>
       <h2>PHP info:</h2>

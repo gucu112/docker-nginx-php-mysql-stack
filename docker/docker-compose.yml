@@ -1,0 +1,35 @@
+version: "3.7"
+
+volumes:
+  source-volume:
+    driver: local
+    name: source-volume
+    driver_opts:
+      type: none
+      o: bind,X-mount.mkdir
+      device: $PWD
+
+  php-run-volume:
+    driver: local
+    name: php-run-volume
+    driver_opts:
+      type: none
+      o: bind,X-mount.mkdir
+      device: $PWD/var/run/php
+
+  mysql-data-volume:
+    driver: local
+    name: mysql-data-volume
+    driver_opts:
+      type: none
+      o: bind,X-mount.mkdir
+      device: $PWD/var/data/mysql
+
+networks:
+  database-net:
+    driver: bridge
+    name: database-net
+
+  internal-net:
+    driver: bridge
+    name: internal-net

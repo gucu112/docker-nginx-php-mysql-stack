@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  mysql-database:
+    build:
+      context: $PWD/docker/mysql
+    image: $MYSQL_DATABASE_CONTAINER_NAME:$DOCKER_TAG
+    container_name: $MYSQL_DATABASE_CONTAINER_NAME
+    restart: on-failure
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_DATABASE_ROOT_PASSWORD
+      - MYSQL_LOG_CONSOLE=
+    networks:
+      - database-net
+    expose:
+      - "$MYSQL_DATABASE_PORT"
+    volumes:
+      - mysql-data-volume:/var/lib/mysql:cached
+      - $PWD/docker/mysql/config/my.cnf.d:/etc/my.cnf.d:cached
+      - $PWD/var/log/mysql:/var/log/mysql:delegated

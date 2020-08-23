@@ -1,5 +1,8 @@
 # Ignore hidden files
 .*
 
+# Ignore docker compose file
+docker-compose.yml
+
 # Exclude template files
 *.template

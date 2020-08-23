@@ -5,5 +5,5 @@
 
 # Restart MySQL container
 echo 'Reloading MySQL database...'
-sudo -E $(docker) restart $MYSQL_DATABASE_CONTAINER_NAME &>/dev/null
+$(docker) restart $MYSQL_DATABASE_CONTAINER_NAME &>/dev/null
 echo 'Done.'

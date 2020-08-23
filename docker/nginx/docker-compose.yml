@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  nginx-server:
+    build:
+      context: $PWD/docker/nginx
+    image: $NGINX_SERVER_CONTAINER_NAME:$DOCKER_TAG
+    container_name: $NGINX_SERVER_CONTAINER_NAME
+    restart: always
+    networks:
+      - internal-net
+    ports:
+      - "$NGINX_SERVER_PORT:$NGINX_SERVER_PORT"
+    volumes:
+      - source-volume:/var/www/html:cached
+      - php-run-volume:/var/run/php:delegated
+      - $PWD/docker/nginx/config/conf.d:/etc/nginx/conf.d:cached
+      - $PWD/var/log/nginx:/var/log/nginx:delegated

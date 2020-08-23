@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  php-fpm:
+    build:
+      context: $PWD/docker/php
+    image: $PHP_FPM_CONTAINER_NAME:$DOCKER_TAG
+    container_name: $PHP_FPM_CONTAINER_NAME
+    restart: always
+    networks:
+      - database-net
+      - internal-net
+    volumes:
+      - source-volume:/var/www/html:cached
+      - php-run-volume:/var/run/php:delegated
+      - $PWD/docker/php/config/php-fpm.d:/usr/local/etc/php-fpm.d:cached
+      - $PWD/var/log/php:/var/log/php:delegated
