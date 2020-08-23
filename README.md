@@ -43,27 +43,27 @@ You can also install Composer and Symfony additionally:
 
 You can define variables for your project in `.env` file.
 
-| Variable name                       | Default value                      | Description                                                                                                    |
-| ----------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| **DOCKER_TAG**                      | _latest_                           | Global docker tag that will be used when building docker images.                                               |
-| **COMPOSE_PROJECT_NAME**            | _docker-php-environment_           | Compose CLI variable. See [here](https://docs.docker.com/compose/reference/envvars/#compose_project_name).     |
-| **COMPOSE_FILE**                    | _./docker/docker-compose.yml_      | Compose CLI variable. See [here](https://docs.docker.com/compose/reference/envvars/#compose_file).             |
-| **COMPOSE_HTTP_TIMEOUT**            | _15_                               | Compose CLI variable. See [here](https://docs.docker.com/compose/reference/envvars/#compose_http_timeout).     |
-| **NGINX_SERVER_CONTAINER_SWITCH**   | _true_                             | Switch for `nginx` container; Defaults to disabled; Set either `1` or `true` to enable container.              |
-| **NGINX_SERVER_CONTAINER_NAME**     | _nginx-server_                     | Image name for `nginx` container; Used in bash scripts and docker compose.                                     |
-| **NGINX_SERVER_VERSION**            | _1.18.0-alpine_                    | Image tag for `nginx` container; See [tags](https://hub.docker.com/_/nginx?tab=tags).                          |
-| **NGINX_SERVER_PORT**               | _8080_                             | Public port for `nginx` container; Used in docker compose; Replaced in configuration.                          |
-| **NGINX_SERVER_PUBLIC_DIRECTORY**   | _public_                           | Public directory for `nginx` container; Replaced in configuration.                                             |
-| **PHP_FPM_CONTAINER_SWITCH**        | _true_                             | Switch for `nginx` container; Defaults to disabled; Set either `1` or `true` to enable container.              |
-| **PHP_FPM_CONTAINER_NAME**          | _php-fpm_                          | Image name for `php` container; Used in bash scripts and docker compose.                                       |
-| **PHP_FPM_VERSION**                 | _7.4.5-fpm_                        | Image tag for `php` container; See [tags](https://hub.docker.com/_/php?tab=tags).                              |
-| **MYSQL_DATABASE_CONTAINER_SWITCH** | _true_                             | Switch for `mysql` container; Defaults to disabled; Set either `1` or `true` to enable container.              |
-| **MYSQL_DATABASE_CONTAINER_NAME**   | _mysql-database_                   | Image name for `mysql` container; Used in bash scripts and docker compose.                                     |
-| **MYSQL_DATABASE_VERSION**          | _8.0.20-1.1.16-amd64_              | Image tag for `mysql` container; See [tags](https://hub.docker.com/_/mysql?tab=tags).                          |
-| **MYSQL_DATABASE_PORT**             | _3306_                             | Exposed port for `mysql` container; Used in docker compose; Replaced in configuration.                         |
-| **MYSQL_DATABASE_ROOT_PASSWORD**    | _default_                          | Root user password for `mysql` container; Set by `MYSQL_ROOT_PASSWORD` environment variable inside container.  |
-| **MYSQL_DATABASE_INITIAL_SCRIPT**   | _./docker/mysql/initialScript.sql_ | Path to initial SQL script (absolute or relative to project directory) used when loading database.             |
-| ---------------------------------   | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Variable name                       | Default value                      | Description                                                                                                   |
+| ----------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **DOCKER_TAG**                      | _latest_                           | Global docker tag that will be used when building docker images.                                              |
+| **COMPOSE_API_VERSION**             | _2_                                | Compose CLI variable. See [here](https://docs.docker.com/compose/reference/envvars/#compose_api_version).     |
+| **COMPOSE_PROJECT_NAME**            | _docker-php-environment_           | Compose CLI variable. See [here](https://docs.docker.com/compose/reference/envvars/#compose_project_name).    |
+| **COMPOSE_FILE**                    | _./docker/docker-compose.yml_      | Compose CLI variable. See [here](https://docs.docker.com/compose/reference/envvars/#compose_file).            |
+| **COMPOSE_HTTP_TIMEOUT**            | _30_                               | Compose CLI variable. See [here](https://docs.docker.com/compose/reference/envvars/#compose_http_timeout).    |
+| **NGINX_SERVER_CONTAINER_SWITCH**   | _true_                             | Switch for `nginx` container; Defaults to disabled; Set either `1` or `true` to enable container.             |
+| **NGINX_SERVER_CONTAINER_NAME**     | _nginx-server_                     | Image name for `nginx` container; Used in bash scripts and docker compose.                                    |
+| **NGINX_SERVER_VERSION**            | _1.18.0-alpine_                    | Image tag for `nginx` container; See [tags](https://hub.docker.com/_/nginx?tab=tags).                         |
+| **NGINX_SERVER_PORT**               | _8080_                             | Public port for `nginx` container; Used in docker compose; Replaced in configuration.                         |
+| **NGINX_SERVER_PUBLIC_DIRECTORY**   | _public_                           | Public directory for `nginx` container; Replaced in configuration.                                            |
+| **PHP_FPM_CONTAINER_SWITCH**        | _true_                             | Switch for `nginx` container; Defaults to disabled; Set either `1` or `true` to enable container.             |
+| **PHP_FPM_CONTAINER_NAME**          | _php-fpm_                          | Image name for `php` container; Used in bash scripts and docker compose.                                      |
+| **PHP_FPM_VERSION**                 | _7.4.5-fpm_                        | Image tag for `php` container; See [tags](https://hub.docker.com/_/php?tab=tags).                             |
+| **MYSQL_DATABASE_CONTAINER_SWITCH** | _true_                             | Switch for `mysql` container; Defaults to disabled; Set either `1` or `true` to enable container.             |
+| **MYSQL_DATABASE_CONTAINER_NAME**   | _mysql-database_                   | Image name for `mysql` container; Used in bash scripts and docker compose.                                    |
+| **MYSQL_DATABASE_VERSION**          | _8.0.20-1.1.16-amd64_              | Image tag for `mysql` container; See [tags](https://hub.docker.com/_/mysql?tab=tags).                         |
+| **MYSQL_DATABASE_PORT**             | _3306_                             | Exposed port for `mysql` container; Used in docker compose; Replaced in configuration.                        |
+| **MYSQL_DATABASE_ROOT_PASSWORD**    | _default_                          | Root user password for `mysql` container; Set by `MYSQL_ROOT_PASSWORD` environment variable inside container. |
+| **MYSQL_DATABASE_INITIAL_SCRIPT**   | _./docker/mysql/initialScript.sql_ | Path to initial SQL script (absolute or relative to project directory) used when loading database.            |
 
 ### Building
 
@@ -183,6 +183,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Update README.md
   - Create deployment guide (simple guide how to deploy)
   - Create contribution rules (set of rules to follow when contributing)
+
+**v20.8.24.1**
+
+- Update Compose CLI environment variables
+- Fix last row of table in README.md
 
 **v20.8.24.0**
 
